@@ -16,7 +16,7 @@
           />
 
           <!--notes-->
-          <notes :notes="notes" />
+          <notes :notes="notes" @remove="removeOldNote"/>
           
         </div>
       </section>
@@ -78,6 +78,9 @@ export default {
         this.message = null;
         this.note.title = '';
         this.note.descr = '';
+      },
+      removeOldNote(index) {
+        this.notes.splice(index, 1)
       }
     }
 }
