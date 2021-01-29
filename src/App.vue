@@ -5,7 +5,6 @@
       <section>
         <div class="container">
 
-
           <!--message-->
           <message v-if="message" :message="message"/>
 
@@ -19,7 +18,8 @@
 
             <h1>{{title}}</h1>
 
-            <search />
+            <!-- search -->
+            <search :value="search" placeholder="Find title" @search="search = $event"/>
 
             <!-- icons controls -->
             <div class="icons">
@@ -30,7 +30,7 @@
 
 
           <!--notes-->
-          <notes :notes="notes" :grid="grid" @remove="removeOldNote"/>
+          <notes :notes="notesFilter" :grid="grid" @remove="removeOldNote"/>
           
         </div>
       </section>
@@ -54,6 +54,7 @@ export default {
       title: 'Notes App',
         message: null,
         grid: true,
+        search: '',
         note: {
             title: '',
             descr: ''
@@ -75,6 +76,24 @@ export default {
                   date: new Date(Date.now()).toLocaleString()
               }
           ]
+      }
+    },
+    computed: {
+      notesFilter() {
+        let array = this.notes,
+            search = this.search
+        
+        if (!search) return array
+
+        search = search.trim().toLowerCase();
+
+        array = array.filter( function(item) {
+          if (item.title.toLowerCase().indexOf(search) !== -1) {
+            return item
+          }
+        })
+
+        return array
       }
     },
     methods: {
